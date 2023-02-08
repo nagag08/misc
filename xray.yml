@@ -1,0 +1,6 @@
+- name: Play for xray_servers
+  hosts: xray_servers
+  collections:
+    - community.general
+  roles:
+    - xray

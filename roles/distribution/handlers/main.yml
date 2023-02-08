@@ -1,0 +1,13 @@
+---
+# handlers file for distribution
+- name: Restart distribution
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ distribution_daemon }}"
+    state: restarted
+
+- name: Stop distribution
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ distribution_daemon }}"
+    state: stopped

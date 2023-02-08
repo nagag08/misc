@@ -1,0 +1,9 @@
+- name: Play for artifactory_servers
+  hosts: artifactory_servers
+  collections:
+    - community.general
+  serial:
+    - 1
+    - 100%
+  roles:
+    - artifactory

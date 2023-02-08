@@ -1,0 +1,13 @@
+---
+# handlers file for xray
+- name: Restart xray
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ xray_daemon }}"
+    state: restarted
+
+- name: Stop xray
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ xray_daemon }}"
+    state: stopped

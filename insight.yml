@@ -1,0 +1,7 @@
+- name: Play for insight_servers
+  hosts: insight_servers
+  collections:
+    - community.general
+    - ansible.posix
+  roles:
+    - insight

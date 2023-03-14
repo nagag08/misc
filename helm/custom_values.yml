@@ -1,0 +1,90 @@
+# If this is an upgrade over an existing platform chart(>= 10.0.0), explicitly pass 'gaUpgradeReady=true' to upgrade
+gaUpgradeReady: false
+
+global:
+  imageRegistry: releases-docker.jfrog.io
+  jfrogUrl: '{{ include "jfrog-platform.jfrogUrl" . }}'
+  jfrogUrlUI: https://artifactory.mycompany.com 
+  joinKey: b8a71308745d34b4e8e3642b22953243ec61e91ee575738597f5d721277674f6
+  masterKey: 38bf280b58994e02fc1bcaf32d45b1634a4da4d9286cdd493d5787689c62acc3
+
+  
+## This Postgresql is used by all products , set postgresql.enabled: false, when you want to use external postgresql for all products
+postgresql:
+  enabled: true
+  postgresqlExtendedConf:
+    max_connections: 1000
+    max_wal_size: 1000MB
+  persistence:
+    size: 500Gi
+
+## This Rabbitmq is used by Xray and Pipelines only, set rabbitmq.enabled: false, when Xray or Pipelines is not enabled
+rabbitmq:
+  enabled: true
+
+## This Redis is used by pipelines only, set redis.enabled: false, when pipelines is not enabled
+redis:
+  enabled: true
+
+
+artifactory:
+  enabled: true
+  systemYamlOverride:
+    existingSecret: artifactory-custom-systemyaml
+    dataKey: system.yaml
+  nginx:
+    enabled: true
+    name: art
+    tlsSecretName: tlsSecret
+    http:
+        enabled: true
+    https:
+        enabled: true
+  mc:
+    enabled: true
+  artifactory:
+    # Note: For HA deployments, set replicaCount >1 (recommended 3)
+    replicaCount: 1
+    openMetrics:
+      enabled: true
+
+    persistence:
+      size: 500Gi 
+
+
+xray:
+  enabled: true
+  xray:
+    openMetrics:
+      enabled: true
+
+  common:
+    persistence:
+      size: 200Gi
+  
+distribution:
+  enabled: true
+  
+insight:
+  enabled: true
+  insightServer:
+    openMetrics:
+      enabled: true
+  elasticsearch:
+    javaOpts:
+      xms: "2g"
+      xmx: "2g"
+
+pipelines:
+  enabled: true
+  pipelines:
+    api:
+      externalUrl: "https://artifactory.mycompany.com/pipelines/api"
+    metrics:
+      enabled: true
+    logging:
+      view:
+        enabled: true
+ 
+pdnServer:
+  enabled: false
